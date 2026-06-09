@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vartexzys / Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Базовые настройки страницы */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Unbounded', sans-serif; /* Применяем шрифт для всего сайта */
+            background-color: #0d0e12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Неоновые размытые сферы на фоне */
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .glow-1 {
+            width: 400px;
+            height: 400px;
+            background: #6366f1;
+            top: 10%;
+            left: 15%;
+        }
+
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: #3b82f6;
+            bottom: 10%;
+            right: 15%;
+        }
+
+        /* Основная стеклянная панель (Glassmorphism) */
+        .glass-container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 80vh;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Верхняя панель (Шапка) */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 18px;
+        }
+
+        .contact-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ffffff;
+        }
+
+        /* Главный блок контента */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        /* HERO-блок: выстраиваем текст и кнопку друг под другом */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 35px; 
+        }
+
+        /* Настройки заголовка: сделали шрифт легким и не капсом */
+        .hero-section h1 {
+            font-size: 32px;          /* Аккуратный размер */
+            font-weight: 300;         /* Сделали шрифт тонким и легким */
+            letter-spacing: -0.2px;
+            max-width: 750px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Стеклянная кнопка */
+        button {
+            font-family: 'Unbounded', sans-serif;
+            background: rgba(255, 255, 255, 0.07);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 16px 36px;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Сетка карточек с проектами */
+        .projects-grid {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .project-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .project-card p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Классы анимации для плавного открытия проектов */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <div class="glass-container">
+        <header>
+            <div class="logo">VARTEXZYS</div>
+            <a href="#" class="contact-link">КОНТАКТЫ</a>
+        </header>
+
+        <main>
+            <section class="hero-section">
+                <h1>Создаю темные цифровые решения для вас и вашего бизнеса</h1>
+                <button id="action-btn">ПОСМОТРЕТЬ ПРОЕКТЫ</button>
+            </section>
+
+            <section id="projects" class="projects-grid hidden">
+                <div class="project-card">
+                    <h3>Telegram Info Bot</h3>
+                    <p>Умный парсер новостей с автоматическим уведомлением в Telegram по ключевым словам.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Cyber Wallet</h3>
+                    <p>Приложение для учета финансов и криптовалюты с анимированными графиками.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('action-btn');
+            const projectsSection = document.getElementById('projects');
+
+            btn.addEventListener('click', () => {
+                if (projectsSection.classList.contains('hidden')) {
+                    projectsSection.classList.remove('hidden');
+                    projectsSection.classList.add('show');
+                    btn.textContent = 'СКРЫТЬ ПРОЕКТЫ';
+                } else {
+                    projectsSection.classList.remove('show');
+                    projectsSection.classList.add('hidden');
+                    btn.textContent = 'ПОСМОТРЕТЬ ПРОЕКТЫ';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
